@@ -42,7 +42,7 @@ document.addEventListener('mouseup', () => {
     click = false;
 })
 
-let n = 1;
+let n = 25;
 
 canvas.addEventListener('mousemove', (e) => {
     mousePosition.x = Math.floor(Math.abs(e.offsetX) / size);
@@ -67,7 +67,7 @@ function run() {
         for (let j = grid[i].length; j >= 0; j--) {
             if (grid[i][j]) { // then: it's a piece
 
-                render.fill("#444")
+                render.fill('hsl('+grid[i][j]+', 100%, 50%)');
 
                 shape.square(j * size, i * size, size);
                 if (grid[i + 1] != null) { // then: it's not the last piece of canvas
@@ -101,8 +101,15 @@ function run() {
 
 }
 
+let step = 1;
 setInterval(() => {
     if (click) {
+        if(n == 60)
+            step = -1;
+        else if(n == 25)
+            step = 1;
+            
+        n += step;
         if(grid[mousePosition.y][mousePosition.x] == 0) {
             if(grid[mousePosition.y - 1] != null) {
                 if(Math.random() < .50)
