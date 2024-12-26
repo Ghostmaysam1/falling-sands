@@ -49,6 +49,15 @@ canvas.addEventListener('mousemove', (e) => {
     mousePosition.y = Math.floor(Math.abs(e.offsetY) / size);
 })
 
+function insertLeft(i: number, j:number) {
+    grid[i + 1][j - 1] = grid[i][j]; // insert new piece in below-left
+    grid[i][j] = 0;
+}
+
+function insertRight(i: number, j: number) {
+    grid[i + 1][j + 1] = grid[i][j]; // insert new piece in below-right
+    grid[i][j] = 0;
+}
 
 function run() {
     // clean canvas
@@ -64,16 +73,25 @@ function run() {
                 if (grid[i + 1] != null) { // then: it's not the last piece of canvas
 
                     if (grid[i + 1][j] == 0) { // then: below this piece there is empty space
+                        grid[i + 1][j] = grid[i][j]; // insert new piece in below
                         grid[i][j] = 0; // clean prev piece
-                        grid[i + 1][j] = n; // insert new piece in below
                     } else {
-                        if (grid[i + 1][j + 1] != null && grid[i + 1][j + 1] == 0) { // then: Below this piece on the right there is empty space
-                            grid[i][j] = 0;
-                            grid[i + 1][j + 1] = n; // insert new piece in below-right
-                        }
-                        if (grid[i + 1][j - 1] != null && grid[i + 1][j - 1] == 0) { // then: Below this piece on the left there is empty space
-                            grid[i][j] = 0;
-                            grid[i + 1][j - 1] = n; // insert new piece in below-left
+                        let choice = 0;
+                        if (grid[i + 1][j + 1] != null && grid[i + 1][j + 1] == 0) // then: Below this piece on the right there is empty space
+                            choice = 5;
+                        if (grid[i + 1][j - 1] != null && grid[i + 1][j - 1] == 0) // then: Below this piece on the left there is empty space
+                            choice++;
+
+                        if(choice > 5) {
+                            if(Math.random() > .5) {
+                                insertLeft(i, j);
+                            } else {
+                                insertRight(i, j);
+                            }
+                        } else if(choice == 1) {
+                            insertLeft(i, j);
+                        } else if(choice  == 5) {
+                            insertRight(i, j);
                         }
                     }
                 }
@@ -85,7 +103,17 @@ function run() {
 
 setInterval(() => {
     if (click) {
-        grid[mousePosition.y][mousePosition.x] = n;
+        if(grid[mousePosition.y][mousePosition.x] == 0) {
+            if(grid[mousePosition.y - 1] != null) {
+                if(Math.random() < .50)
+                    grid[mousePosition.y - 1][mousePosition.x - 1] = n;
+                if(Math.random() < .50)
+                    grid[mousePosition.y - 1][mousePosition.x + 1] = n;
+            }
+            if(Math.random() < .50)
+                grid[mousePosition.y][mousePosition.x] = n;
+        }
+
     }
     run()
 }, 1000 / FPS);
