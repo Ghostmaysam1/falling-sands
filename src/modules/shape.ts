@@ -1,3 +1,6 @@
+/**
+ * render shapes in canvas
+ */
 export default class Shape {
     private ctx: CanvasRenderingContext2D;
 

@@ -5,14 +5,15 @@ import Render from "./modules/render.js";
 const canvas = <HTMLCanvasElement>(document.getElementById("canvas"));
 let w = Math.floor(window.innerWidth / 5);
 let h = Math.floor(window.innerHeight / 5);
-if(w > 220)
+// limit the canvas size
+if (w > 220)
     w = 220;
-if(h > 130)
+if (h > 130)
     h = 130;
-canvas.width = (w -  (w % 5)) * 5;
-canvas.height = (h -  (h % 5)) * 5;
 
-// canvas.height = ((Math.floor(window.innerHeight / 10) / 100) * 50) * 5;
+// set canvas size
+canvas.width = (w - (w % 5)) * 5;
+canvas.height = (h - (h % 5)) * 5;
 
 const ctx = canvas.getContext('2d');
 
@@ -20,8 +21,9 @@ const shape = new Shape(ctx!);
 const render = new Render(ctx!, canvas);
 
 let size = 5,
-rows = canvas.clientWidth / size,
-cols = canvas.clientHeight / size;
+    FPS = 100,
+    rows = canvas.clientWidth / size,
+    cols = canvas.clientHeight / size;
 
 let grid: (number | null)[][] = make2DArray(rows, cols);
 let click = false;
@@ -49,29 +51,29 @@ canvas.addEventListener('mousemove', (e) => {
 
 
 function run() {
+    // clean canvas
     render.background('#d3c891');
 
     for (let i = (grid.length - 1); i >= 0; i--) {
         for (let j = grid[i].length; j >= 0; j--) {
-            if (grid[i][j]) {
+            if (grid[i][j]) { // then: it's a piece
 
-                // render.fill('#ffa700')
                 render.fill("#444")
 
                 shape.square(j * size, i * size, size);
-                if (grid[i + 1] != null) {
+                if (grid[i + 1] != null) { // then: it's not the last piece of canvas
 
-                    if (grid[i + 1][j] == 0) {
-                        grid[i][j] = 0;
-                        grid[i + 1][j] = n;
+                    if (grid[i + 1][j] == 0) { // then: below this piece there is empty space
+                        grid[i][j] = 0; // clean prev piece
+                        grid[i + 1][j] = n; // insert new piece in below
                     } else {
-                        if(grid[i + 1][j + 1] != null && grid[i + 1][j + 1] == 0) {
+                        if (grid[i + 1][j + 1] != null && grid[i + 1][j + 1] == 0) { // then: Below this piece on the right there is empty space
                             grid[i][j] = 0;
-                            grid[i + 1][j + 1] = n;
+                            grid[i + 1][j + 1] = n; // insert new piece in below-right
                         }
-                        if(grid[i + 1][j - 1] != null && grid[i + 1][j - 1] == 0) {
+                        if (grid[i + 1][j - 1] != null && grid[i + 1][j - 1] == 0) { // then: Below this piece on the left there is empty space
                             grid[i][j] = 0;
-                            grid[i + 1][j - 1] = n;
+                            grid[i + 1][j - 1] = n; // insert new piece in below-left
                         }
                     }
                 }
@@ -82,8 +84,8 @@ function run() {
 }
 
 setInterval(() => {
-    if(click) {
+    if (click) {
         grid[mousePosition.y][mousePosition.x] = n;
     }
     run()
-}, 1000 / 100);
+}, 1000 / FPS);

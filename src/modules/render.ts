@@ -1,3 +1,6 @@
+/**
+ * control colors
+ */
 export default class Render {
     width: number;
     height: number;
@@ -21,28 +24,6 @@ export default class Render {
         this.ctx.fillStyle = color;
         this.colors.fill = color;
     }
-
-    // /**
-    //  * remove stroke style
-    //  */
-    // noStroke() {
-    //     this.ctx.strokeStyle = "#00000000";
-    // }
-
-    // /**
-    //  * set the stroke style to (color)
-    //  */
-    // stroke(color: string) {
-    //     this.ctx.strokeStyle = color;
-    //     this.colors.stroke = color;
-    // }
-
-    // /**
-    //  * remove stroke style
-    //  */
-    // noFill() {
-    //     this.ctx.fillStyle = "#00000000";
-    // }
 
     /**
      * clear canvas and set background
