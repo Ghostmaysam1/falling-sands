@@ -1,16 +1,14 @@
 {
   "name": "falling-sands",
   "version": "1.1.1",
-  "main": "dist/index.js",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "serve -s . -l tcp://0.0.0.0:$PORT"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
   "devDependencies": {
     "typescript": "^5.8.2"
   }
