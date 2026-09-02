@@ -1,10 +1,11 @@
 {
   "name": "falling-sands",
   "version": "1.1.1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
